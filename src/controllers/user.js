@@ -1,86 +1,93 @@
-import bcrypt from "bcryptjs"
-import Jwt from "jsonwebtoken"
+import bcrypt from 'bcryptjs';
+import Jwt from 'jsonwebtoken';
 
-import UserModal from "../models/user.js"
+import User from '../models/user.js';
 
 export const signin = async (req, res) => {
-  const { email, password } = req.body
+  const { email, password } = req.body;
   try {
-    const userExisted = await UserModal.findOne({ email })
+    const user = await User.findOne({ email });
 
-    if (!userExisted) return res.status(404).json({ message: "user doesn't exist" })
+    if (!user) return res.status(404).json({ message: "user doesn't exist" });
 
-    const isPasswordCorrect = await bcrypt.compare(password, userExisted.password)
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordCorrect) return res.status(400).json({ message: "password isn't correct" })
+    if (!isPasswordCorrect)
+      return res.status(400).json({ message: "password isn't correct" });
 
     const token = Jwt.sign(
       {
-        id: userExisted._id,
-        email: userExisted.email,
+        id: user._id,
+        email: user.email,
       },
       secret,
-      { expiresIn: "5h" }
-    )
+      { expiresIn: '5h' }
+    );
 
-    res.status(200).json({ result: userExisted, token })
+    res.status(200).json({ result: user, token });
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" })
-    console.log(error)
+    res.status(500).json({ message: 'something went wrong' });
+    console.log(error);
   }
-}
+};
 
 export const signup = async (req, res) => {
-  const { firstName, lastName, email, password, userImage } = req.body
+  const { email, password, username } = req.body;
   try {
-    const userExisted = await UserModal.findOne({ email })
+    const user = await User.findOne({ email });
 
-    if (userExisted) {
-      return res.status(400).json({ message: "User Already Existed" })
+    if (user) {
+      return res.status(400).json({ message: 'User Already Existed' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12)
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-    const result = await UserModal.create({
+    const result = await User.create({
       email,
       password: hashedPassword,
-      userName: `${firstName} ${lastName}`,
-      userImage,
-    })
+      username: username,
+    });
+
+    console.log(result);
 
     const token = Jwt.sign(
       {
         id: result._id,
         email: result.email,
       },
-      secret,
-      { expiresIn: "5h" }
-    )
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
-    res.status(201).json({ result, token })
+    res.status(201).json({ result, token });
   } catch (error) {
-    res.status(500).json({ message: "something went wrong" })
-    console.log(error)
+    console.log(error);
+    res.status(500).json({ message: 'something went wrong' });
   }
-}
+};
 
 export const googleSignIn = async (req, res) => {
-  const { email, userName, token, googleId, userImage } = req.body
+  const { email, userName, token, googleId, userImage } = req.body;
   try {
-    const olduser = await UserModal.findOne({ email })
+    const olduser = await User.findOne({ email });
     if (olduser) {
-      const result = { _id: olduser._id.toString(), email, userName, userImage }
-      return res.status(200).json({ result, token })
+      const result = {
+        _id: olduser._id.toString(),
+        email,
+        userName,
+        userImage,
+      };
+      return res.status(200).json({ result, token });
     }
-    const result = await UserModal.create({
+    const result = await User.create({
       email,
       userName,
       userImage,
       googleId,
-    })
-    res.status(200).json({ result, token })
+    });
+    res.status(200).json({ result, token });
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong" })
-    console.log(error)
+    res.status(500).json({ message: 'Something went wrong' });
+    console.log(error);
   }
-}
+};

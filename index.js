@@ -1,16 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
 const app = express();
-const cors = require('cors');
-const bodyParser = require('body-parser');
-require('./src/config/db')();
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import userRoute from './src/routes/user.js';
+import connection from './src/config/db.js';
+connection();
 
 //middlewares
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
+app.use('/users', userRoute);
 
 const port = process.env.PORT || 8080;
 const server = app.listen(port, () => {

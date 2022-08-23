@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import * as api from "../api.js"
-export const login = createAsyncThunk("auth/login", async ({ formData, navigate, toast }, { rejectWithValue }) => {
+export const login = createAsyncThunk("auth/login", async (formData, { rejectWithValue }) => {
   try {
     const response = await api.login(formData)
     return response.data
@@ -9,9 +9,10 @@ export const login = createAsyncThunk("auth/login", async ({ formData, navigate,
   }
 })
 
-export const register = createAsyncThunk("auth/register", async ({ formData, navigate, toast }, { rejectWithValue }) => {
+export const signup = createAsyncThunk("auth/signup", async (formData, { rejectWithValue }) => {
   try {
-    const response = await api.register(formData)
+    const response = await api.signup(formData)
+    // navigate('/');
     return response.data
   } catch (error) {
     return rejectWithValue(error.response.data)
@@ -20,6 +21,7 @@ export const register = createAsyncThunk("auth/register", async ({ formData, nav
 export const googleSignIn = createAsyncThunk("auth/googleSignIn", async ({ result, navigate, toast }, { rejectWithValue }) => {
   try {
     const response = await api.googleSignIn(result)
+    navigate("/")
     return response.data
   } catch (error) {
     return rejectWithValue(error.response.data)
@@ -46,15 +48,15 @@ const authSlice = createSlice({
       state.loading = false
       state.error = action.payload.message
     },
-    [register.pending]: (state, action) => {
+    [signup.pending]: (state, action) => {
       state.loading = true
     },
-    [register.fulfilled]: (state, action) => {
+    [signup.fulfilled]: (state, action) => {
       state.loading = false
       localStorage.setItem("userData", JSON.stringify({ ...action.payload }))
       state.userConnected = action.payload
     },
-    [register.rejected]: (state, action) => {
+    [signup.rejected]: (state, action) => {
       state.loading = false
       state.error = action.payload.message
     },
