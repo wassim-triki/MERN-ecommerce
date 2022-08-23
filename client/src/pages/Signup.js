@@ -4,8 +4,9 @@ import Modal from 'react-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../redux/features/authSlice';
 import customStyles from '../herlpers/modalStyles';
+import { Link } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = ({ setWich }) => {
   const { userConnected, error, loading } = useSelector((state) => ({
     ...state.auth,
   }));
@@ -18,8 +19,8 @@ const Signup = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(userConnected);
-  }, [error, userConnected]);
+    console.log(error);
+  }, [error]);
 
   const handleChange = ({ currentTarget: input }) => {
     setFormData({
@@ -84,6 +85,9 @@ const Signup = () => {
         >
           Signup
         </button>
+        <div onClick={() => setWich(false)}>
+          Already Have An Account? Sign In
+        </div>
       </form>
     </Modal>
   );

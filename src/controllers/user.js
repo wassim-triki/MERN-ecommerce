@@ -20,8 +20,8 @@ export const signin = async (req, res) => {
         id: user._id,
         email: user.email,
       },
-      secret,
-      { expiresIn: '5h' }
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
     );
 
     res.status(200).json({ result: user, token });
@@ -40,6 +40,7 @@ const getToken = (id, email) => {
     { expiresIn: '1h' }
   );
 };
+
 export const signup = async (req, res) => {
   const { email, password, username } = req.body;
   try {
