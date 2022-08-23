@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
-
-module.exports = () => {
+import mongoose from 'mongoose';
+const connection = () => {
   const connectionParams = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -15,3 +14,4 @@ module.exports = () => {
     console.log('❌ DB CONNECTION ERROR :', err);
   }
 };
+export default connection;
