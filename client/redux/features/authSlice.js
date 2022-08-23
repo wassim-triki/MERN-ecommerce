@@ -3,7 +3,6 @@ import * as api from "../api.js"
 export const login = createAsyncThunk("auth/login", async ({ formData, navigate, toast }, { rejectWithValue }) => {
   try {
     const response = await api.login(formData)
-    navigate("/")
     return response.data
   } catch (error) {
     return rejectWithValue(error.response.data)
@@ -13,7 +12,6 @@ export const login = createAsyncThunk("auth/login", async ({ formData, navigate,
 export const register = createAsyncThunk("auth/register", async ({ formData, navigate, toast }, { rejectWithValue }) => {
   try {
     const response = await api.register(formData)
-    navigate("/")
     return response.data
   } catch (error) {
     return rejectWithValue(error.response.data)
@@ -22,7 +20,6 @@ export const register = createAsyncThunk("auth/register", async ({ formData, nav
 export const googleSignIn = createAsyncThunk("auth/googleSignIn", async ({ result, navigate, toast }, { rejectWithValue }) => {
   try {
     const response = await api.googleSignIn(result)
-    navigate("/")
     return response.data
   } catch (error) {
     return rejectWithValue(error.response.data)
