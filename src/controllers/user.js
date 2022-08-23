@@ -30,7 +30,16 @@ export const signin = async (req, res) => {
     console.log(error);
   }
 };
-
+const getToken = (id, email) => {
+  const token = Jwt.sign(
+    {
+      id,
+      email,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '1h' }
+  );
+};
 export const signup = async (req, res) => {
   const { email, password, username } = req.body;
   try {
@@ -50,14 +59,7 @@ export const signup = async (req, res) => {
 
     console.log(result);
 
-    const token = Jwt.sign(
-      {
-        id: result._id,
-        email: result.email,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const token = getToken(result._id, result.email);
 
     res.status(201).json({ result, token });
   } catch (error) {

@@ -18,8 +18,8 @@ const Signup = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(error);
-  }, [error]);
+    console.log(userConnected);
+  }, [error, userConnected]);
 
   const handleChange = ({ currentTarget: input }) => {
     setFormData({
@@ -43,11 +43,12 @@ const Signup = () => {
       contentLabel="Example Modal"
     >
       <form
-        className="bg-red-50s0 flex flex-col items-stretch gap-4"
+        className="bg-red-50s0 flex flex-col items-stretch gap-3 font-poppins"
         onSubmit={handleSubmit}
       >
         <AuthInput
           type={'text'}
+          label="Username"
           name="username"
           placeholder="Your username"
           value={formData.username}
@@ -55,6 +56,7 @@ const Signup = () => {
         />
         <AuthInput
           type={'email'}
+          label="Email"
           name="email"
           placeholder="Your email"
           value={formData.email}
@@ -62,6 +64,7 @@ const Signup = () => {
         />
         <AuthInput
           type={'password'}
+          label="Password"
           placeholder="Your password"
           value={formData.password}
           onChange={handleChange}
@@ -69,7 +72,8 @@ const Signup = () => {
         />
         <AuthInput
           type={'password'}
-          placeholder="Repeat password"
+          label="Repeat Password"
+          placeholder="Repeat your password"
           value={formData.repeatPassword}
           onChange={handleChange}
           name="repeatPassword"

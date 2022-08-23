@@ -6,9 +6,10 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    width: 'min(100vw,400px)',
+    width: 'min(100vw,380px)',
     borderRadius: '0.5rem',
     backgroundColor: 'white',
+    padding: '30px',
   },
   overlay: {
     backgroundColor: '#00000063',

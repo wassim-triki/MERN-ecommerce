@@ -29,6 +29,9 @@ module.exports = {
           900: '#080808',
         },
       },
+      fontFamily: {
+        poppins: ['Poppins, sans-serif'],
+      },
     },
   },
   plugins: [],
