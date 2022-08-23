@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthInput from '../components/AuthInput';
 import Modal from 'react-modal';
 const customStyles = {
@@ -18,6 +18,23 @@ const customStyles = {
   },
 };
 const Signup = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    repeatPassword: '',
+  });
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
+  const handleChange = ({ currentTarget: input }) => {
+    setFormData({
+      ...formData,
+      [input.name]: input.value,
+    });
+  };
+
   return (
     <Modal
       isOpen={true}
@@ -26,9 +43,27 @@ const Signup = () => {
       contentLabel="Example Modal"
     >
       <form className="bg-red-50s0 flex flex-col items-stretch gap-4">
-        <AuthInput type={'email'} placeholder="Your email" />
-        <AuthInput type={'password'} placeholder="Your password" />
-        <AuthInput type={'password'} placeholder="Repeat password" />
+        <AuthInput
+          type={'email'}
+          name="email"
+          placeholder="Your email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        <AuthInput
+          type={'password'}
+          placeholder="Your password"
+          value={formData.password}
+          onChange={handleChange}
+          name="password"
+        />
+        <AuthInput
+          type={'password'}
+          placeholder="Repeat password"
+          value={formData.repeatPassword}
+          onChange={handleChange}
+          name="repeatPassword"
+        />
         <button
           type="submit"
           className="bg-accent-500 text-white rounded-xl p-3"
