@@ -5,6 +5,7 @@ const fs = require('fs');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('./src/config/db')();
 
 //middlewares
 app.use(express.json());
