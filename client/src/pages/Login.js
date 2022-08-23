@@ -2,19 +2,16 @@ import React, { useEffect, useState } from "react"
 import AuthInput from "../components/AuthInput"
 import Modal from "react-modal"
 import { useDispatch, useSelector } from "react-redux"
-import { signup } from "../redux/features/authSlice"
 import customStyles from "../herlpers/modalStyles"
-import { Link } from "react-router-dom"
+import { login } from "../redux/features/authSlice"
 
-const Signup = ({ setWich }) => {
+const Login = ({ setWich }) => {
   const { userConnected, error, loading } = useSelector((state) => ({
     ...state.auth,
   }))
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: "",
-    repeatPassword: "",
   })
   const dispatch = useDispatch()
 
@@ -31,30 +28,23 @@ const Signup = ({ setWich }) => {
   const handleSubmit = (e) => {
     try {
       e.preventDefault()
-      dispatch(signup(formData))
+      dispatch(login(formData))
     } catch (error) {
       console.log(error)
     }
   }
   return (
-    <Modal
-      isOpen={true}
-      // onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
-    >
+    <Modal isOpen={true} style={customStyles} contentLabel="Example Modal">
       <form className="bg-red-50s0 flex flex-col items-stretch gap-4" onSubmit={handleSubmit}>
-        <AuthInput type={"text"} name="username" placeholder="Your username" value={formData.username} onChange={handleChange} />
         <AuthInput type={"email"} name="email" placeholder="Your email" value={formData.email} onChange={handleChange} />
         <AuthInput type={"password"} placeholder="Your password" value={formData.password} onChange={handleChange} name="password" />
-        <AuthInput type={"password"} placeholder="Repeat password" value={formData.repeatPassword} onChange={handleChange} name="repeatPassword" />
         <button type="submit" className="bg-accent-500 text-white rounded-xl p-3">
-          Signup
+          Login
         </button>
-        <div onClick={() => setWich(false)}>Already Have An Account? Sign In</div>
+        <div onClick={() => setWich(true)}>Register</div>
       </form>
     </Modal>
   )
 }
 
-export default Signup
+export default Login

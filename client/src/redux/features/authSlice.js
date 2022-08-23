@@ -12,7 +12,6 @@ export const login = createAsyncThunk("auth/login", async (formData, { rejectWit
 export const signup = createAsyncThunk("auth/signup", async (formData, { rejectWithValue }) => {
   try {
     const response = await api.signup(formData)
-    // navigate('/');
     return response.data
   } catch (error) {
     return rejectWithValue(error.response.data)
